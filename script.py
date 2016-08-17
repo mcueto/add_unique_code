@@ -26,21 +26,29 @@ def generate_code():
 def main():
     import csv
 
-    with open("input.csv", 'rt', encoding="utf-8") as input, open('output.csv', 'wt', encoding="utf-8") as output:
+    with open("bbdd17082016.csv", 'rt', encoding="utf-8") as input, open('output.csv', 'wt', encoding="utf-8") as output:
         reader = csv.reader(input, delimiter = ',')
         writer = csv.writer(output, delimiter = ',')
 
         all = []
         row = next(reader)
-        row.insert(9, 'UNICO')
-        row.insert(10, 'URL')
+        # row.insert(9, 'UNICO')
+        # row.insert(10, 'URL')
         all.append(row)
         for k, row in enumerate(reader):
-            UID = generate_code()
-            URL = "http://reforestacion.redprecordillera.cl/trees/"+str(UID)+"/"
+            UID = row[9];
+            URL = row[10];
 
-            row.insert(9, UID)
-            row.insert(10,URL)
+            if(not UID):
+                UID = generate_code()
+
+            if(not URL):
+                URL = "http://reforestacion.redprecordillera.cl/trees/"+str(UID)+"/"
+
+            row[9]  = UID
+            row[10] = URL
+            # row.insert(9, UID)
+            # row.insert(10,URL)
 
             all.append(row)
         writer.writerows(all)
